@@ -20,7 +20,7 @@ public class Menu_Victory : MonoBehaviour {
 
     IEnumerator Start()
     {
-        SoundManager.PlaySfx(SoundManager.Instance.soundVictoryPanel);
+        SoundManagerZS.PlaySfx(SoundManagerZS.Instance.soundVictoryPanel);
         
         GlobalValueZS.LevelStar(GlobalValueZS.LevelPlaying, GameManagerZS.Instance.levelStarGot);
         yield return new WaitForSeconds(0.5f);
@@ -28,6 +28,6 @@ public class Menu_Victory : MonoBehaviour {
         Menu.SetActive(true);
         Restart.SetActive(true);
         
-        Next.SetActive(LevelWave.Instance);
+        Next.SetActive(LevelWaveZS.Instance);
     }
 }

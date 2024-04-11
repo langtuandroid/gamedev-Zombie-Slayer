@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Script;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -46,7 +47,7 @@ public class GrenadeZS : MonoBehaviour
                 }
             }
 
-            SoundManager.PlaySfx(soundD);
+            SoundManagerZS.PlaySfx(soundD);
             SpawnSystemHelper.GetNextObject(blowFX, true).transform.position = transform.position;
             gameObject.SetActive(false);
         }

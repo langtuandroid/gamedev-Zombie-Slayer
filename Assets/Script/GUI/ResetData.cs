@@ -3,11 +3,11 @@ using System.Collections;
 using UnityEngine.SceneManagement;
 
 public class ResetData : MonoBehaviour {
-	SoundManager soundManager;
+	SoundManagerZS soundManagerZs;
 	public bool ResetRemoveAd = false;
 
 	void Start(){
-		soundManager = FindObjectOfType<SoundManager> ();
+		soundManagerZs = FindObjectOfType<SoundManagerZS> ();
 	}
 
 	public void Reset(){
@@ -17,7 +17,7 @@ public class ResetData : MonoBehaviour {
 		//PlayerPrefs.DeleteAll ();
 
 		//GlobalValue.RemoveAds = ResetRemoveAd ? false : isRemoveAd;
-		SoundManager.PlaySfx (soundManager.soundClick);
+		SoundManagerZS.PlaySfx (soundManagerZs.soundClick);
 
 		//if (DefaultValue.Instance)
 		//	FindObjectOfType<DefaultValue> ().ResetDefaultValue ();
@@ -29,7 +29,7 @@ public class ResetData : MonoBehaviour {
 	}
 
 	public void ResetGame(){
-		SoundManager.Click ();
+		SoundManagerZS.Click ();
 
 		bool isRemoveAd = GlobalValueZS.RemoveAds;
 

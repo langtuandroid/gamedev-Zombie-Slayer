@@ -136,7 +136,7 @@ public class Enemy : MonoBehaviour,ICanTakeDamage, IListener {
 	public bool isStopping { get; set; }
     [HideInInspector] public bool isStunning = false;
 
-    protected HealthBarEnemyNew healthBar;
+    protected HealthBarEnemyNewZS healthBar;
 	protected Animator anim;
 	protected float moveSpeed;
     [HideInInspector] public CheckTargetHelper checkTarget;
@@ -157,7 +157,7 @@ public class Enemy : MonoBehaviour,ICanTakeDamage, IListener {
         if (GameManagerZS.Instance)
             GameManagerZS.Instance.AddListener(this);
 
-        SoundManager.PlaySfx(soundShowUp, soundShowUpVol);
+        SoundManagerZS.PlaySfx(soundShowUp, soundShowUpVol);
 
         isPlaying = true;
     }
@@ -171,8 +171,8 @@ public class Enemy : MonoBehaviour,ICanTakeDamage, IListener {
         currentHealth = health;
         moveSpeed = walkSpeed;
 
-        var healthBarObj = (HealthBarEnemyNew)Resources.Load("HealthBar", typeof(HealthBarEnemyNew));
-        healthBar = (HealthBarEnemyNew)Instantiate(healthBarObj, healthBarOffset, Quaternion.identity);
+        var healthBarObj = (HealthBarEnemyNewZS)Resources.Load("HealthBar", typeof(HealthBarEnemyNewZS));
+        healthBar = (HealthBarEnemyNewZS)Instantiate(healthBarObj, healthBarOffset, Quaternion.identity);
 
         healthBar.Init(transform, (Vector3)healthBarOffset);
 
@@ -182,7 +182,7 @@ public class Enemy : MonoBehaviour,ICanTakeDamage, IListener {
         switch (startBehavior)
         {
             case STARTBEHAVIOR.BURROWUP:
-                SoundManager.PlaySfx(soundSpawn, soundSpawnVol);
+                SoundManagerZS.PlaySfx(soundSpawn, soundSpawnVol);
 
                 SetEnemyState(ENEMYSTATE.SPAWNING);
                 AnimSetTrigger("spawn");
@@ -289,7 +289,7 @@ public class Enemy : MonoBehaviour,ICanTakeDamage, IListener {
 
 	public virtual void Hit(Vector2 force = default(Vector2), bool pushBack = false, bool knockDownRagdoll = false, bool shock = false)
     {
-		SoundManager.PlaySfx (soundHit, soundHitVol);
+		SoundManagerZS.PlaySfx (soundHit, soundHitVol);
 		switch (hitBehavior) {
 		case HITBEHAVIOR.CANKNOCKBACK:
 			KnockBack (force);
@@ -341,7 +341,7 @@ public class Enemy : MonoBehaviour,ICanTakeDamage, IListener {
 				}
 			}
 		} else
-			SoundManager.PlaySfx (soundDie, soundDieVol);
+			SoundManagerZS.PlaySfx (soundDie, soundDieVol);
         
     }
 
@@ -351,7 +351,7 @@ public class Enemy : MonoBehaviour,ICanTakeDamage, IListener {
 
 		currentHealth -= (int) _damage;
 		if (healthBar)
-			healthBar.UpdateValue (currentHealth / (float) health);
+			healthBar.UpdateValueE (currentHealth / (float) health);
 		
 		if (currentHealth <= 0)
 			Die ();
@@ -570,7 +570,7 @@ public class Enemy : MonoBehaviour,ICanTakeDamage, IListener {
             int _damage = (int)(damagePoisonPerSecond * Random.Range(90 - resistPoisonPercent, 100f - resistPoisonPercent) * 0.01f);
             currentHealth -= _damage;
             if (healthBar)
-                healthBar.UpdateValue(currentHealth / (float)health);
+                healthBar.UpdateValueE(currentHealth / (float)health);
 
             FloatingTextManager.Instance.ShowText("" + (int) _damage, transform.position, healthBarOffset, Color.red);
 
@@ -697,7 +697,7 @@ public class Enemy : MonoBehaviour,ICanTakeDamage, IListener {
 
 
         if (healthBar)
-            healthBar.UpdateValue(currentHealth / (float)health);
+            healthBar.UpdateValueE(currentHealth / (float)health);
         //		Debug.LogError (isExplosion + "BLOW" + (dieBehavior == DIEBEHAVIOR.BLOWUP));
         if (currentHealth <= 0)
         {

@@ -4,6 +4,7 @@ using Script;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using Zenject;
 
 public class MenuManager : MonoBehaviour, IListener
 {
@@ -22,7 +23,9 @@ public class MenuManager : MonoBehaviour, IListener
     public Sprite soundImageOn, soundImageOff, musicImageOn, musicImageOff;
     public GameObject handDirection;
     public Text levelTxt;
-    UI_UI uiControl;
+    private UI_UI uiControlL;
+    
+    [Inject] private GameModeZS gameModeZs;
 
     private void Awake()
     {
@@ -33,16 +36,16 @@ public class MenuManager : MonoBehaviour, IListener
         PauseUI.SetActive(false);
         LoadingUI.SetActive(false);
         MissionInfor.SetActive(true);
-        uiControl = gameObject.GetComponentInChildren<UI_UI>(true);
+        uiControlL = gameObject.GetComponentInChildren<UI_UI>(true);
         handDirection.SetActive(false);
-        if (GameMode.Instance)
-            TestOption.SetActive(GameMode.Instance.showTestOption);
+        if (gameModeZs)
+            TestOption.SetActive(gameModeZs.showTestOption);
         levelTxt.text = "Level " + GlobalValueZS.LevelPlaying;
     }
 
     public void ShowMissionInfor(bool open)
     {
-        SoundManager.Click();
+        SoundManagerZS.Click();
         MissionInfor.SetActive(open);
     }
 
@@ -57,9 +60,9 @@ public class MenuManager : MonoBehaviour, IListener
         soundImage.sprite = GlobalValueZS.IsSound ? soundImageOn : soundImageOff;
         musicImage.sprite = GlobalValueZS.IsMusic ? musicImageOn : musicImageOff;
         if (!GlobalValueZS.IsSound)
-            SoundManager.SoundVolume = 0;
+            SoundManagerZS.SoundVolume = 0;
         if (!GlobalValueZS.IsMusic)
-            SoundManager.MusicVolume = 0;
+            SoundManagerZS.MusicVolume = 0;
 
         StartUI.SetActive(true);
 
@@ -71,7 +74,7 @@ public class MenuManager : MonoBehaviour, IListener
     float currentTimeScale;
     public void Pause()
     {
-        SoundManager.PlaySfx(SoundManager.Instance.soundPause);
+        SoundManagerZS.PlaySfx(SoundManagerZS.Instance.soundPause);
         if (Time.timeScale != 0)
         {
             GameManagerZS.Instance.GamePause();
@@ -79,7 +82,7 @@ public class MenuManager : MonoBehaviour, IListener
             Time.timeScale = 0;
             UI.SetActive(false);
             PauseUI.SetActive(true);
-            SoundManager.Instance.PauseMusic(true);
+            SoundManagerZS.Instance.PauseMusicC(true);
         }
         else
         {
@@ -87,13 +90,13 @@ public class MenuManager : MonoBehaviour, IListener
             Time.timeScale = currentTimeScale;
             UI.SetActive(true);
             PauseUI.SetActive(false);
-            SoundManager.Instance.PauseMusic(false);
+            SoundManagerZS.Instance.PauseMusicC(false);
         }
     }
 
     public void ShowHandDirection(float delay = 2)
     {
-        SoundManager.PlaySfx(SoundManager.Instance.moveOn);
+        SoundManagerZS.PlaySfx(SoundManagerZS.Instance.moveOn);
         handDirection.SetActive(true);
         Invoke("HideHandDirection", delay);
     }
@@ -166,7 +169,7 @@ public class MenuManager : MonoBehaviour, IListener
         GlobalValueZS.IsSound = !GlobalValueZS.IsSound;
         soundImage.sprite = GlobalValueZS.IsSound ? soundImageOn : soundImageOff;
 
-        SoundManager.SoundVolume = GlobalValueZS.IsSound ? 1 : 0;
+        SoundManagerZS.SoundVolume = GlobalValueZS.IsSound ? 1 : 0;
     }
 
     public void TurnMusic()
@@ -174,26 +177,26 @@ public class MenuManager : MonoBehaviour, IListener
         GlobalValueZS.IsMusic = !GlobalValueZS.IsMusic;
         musicImage.sprite = GlobalValueZS.IsMusic ? musicImageOn : musicImageOff;
 
-        SoundManager.MusicVolume = GlobalValueZS.IsMusic ? SoundManager.Instance.musicsGameVolume : 0;
+        SoundManagerZS.MusicVolume = GlobalValueZS.IsMusic ? SoundManagerZS.Instance.musicsGameVolume : 0;
     }
     #endregion
 
     #region Load Scene
     public void LoadHomeMenuScene()
     {
-        SoundManager.Click();
+        SoundManagerZS.Click();
         StartCoroutine(LoadAsynchronously("Menu"));
     }
 
     public void RestarLevel()
     {
-        SoundManager.Click();
+        SoundManagerZS.Click();
         StartCoroutine(LoadAsynchronously(SceneManager.GetActiveScene().name));
     }
 
     public void LoadNextLevel()
     {
-        SoundManager.Click();
+        SoundManagerZS.Click();
         GlobalValueZS.LevelPlaying++;
         StartCoroutine(LoadAsynchronously(SceneManager.GetActiveScene().name));
     }

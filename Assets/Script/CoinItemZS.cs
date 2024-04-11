@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Script;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -16,7 +17,7 @@ public class CoinItemZS : MonoBehaviour, ICanCollect
     public void CollectT()
     {
         GlobalValueZS.SavedCoins += rewardedD;
-        SoundManager.PlaySfx(soundD);
+        SoundManagerZS.PlaySfx(soundD);
         FloatingTextManager.Instance.ShowText("+" + rewardedD, transform.position, Vector2.zero, Color.yellow);
         gameObject.SetActive(false);
     }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
-[CustomEditor(typeof(GameMode))]
+[CustomEditor(typeof(GameModeZS))]
 
 public class GameModeEditor : Editor
 {

@@ -7,11 +7,11 @@ using UnityEngine.Serialization;
 public class CollectGunItemZS : MonoBehaviour, ICanCollect
 {
     [FormerlySerializedAs("gunTypeID")] public GunTypeIDZS gunTypeIdzs;
-    public AudioClip soundCollect;
+    [SerializeField] private AudioClip soundCollect;
 
     public void CollectT()
     {
-        SoundManager.PlaySfx(soundCollect);
+        SoundManagerZS.PlaySfx(soundCollect);
         GunManagerZS.Instance.SetNewGunDuringGameplay(gunTypeIdzs);
         Destroy(gameObject);
     }

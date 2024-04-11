@@ -15,7 +15,7 @@ namespace Script
         [ReadOnly] public bool isChecking = false;
         [ReadOnly] public bool isAffectZoneWorking = false;
 
-        private AffectZoneButton pickedBtnN;
+        private AffectZoneButtonZS pickedBtnN;
     
         private void Awake()
         {
@@ -49,7 +49,7 @@ namespace Script
 
                             isZone.gameObject.SetActive(true);
                             isZone.ActiveE(affectTypeE);
-                            pickedBtnN.StartCountingDown();
+                            pickedBtnN.StartCountingDownN();
                             isChecking = false;
                             isAffectZoneWorking = true;
                         }
@@ -57,7 +57,7 @@ namespace Script
                 }
             }
         }
-        public void ActiveZoneE(AffectZoneType _type, AffectZoneButton _pickedBtn)
+        public void ActiveZoneE(AffectZoneType _type, AffectZoneButtonZS _pickedBtn)
         {
             if (isChecking)
                 return;

@@ -1,79 +1,76 @@
-using System;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.UI;
+using UnityStandardAssets.CrossPlatformInput;
 
-namespace UnityStandardAssets.CrossPlatformInput
+namespace Script
 {
 	public class JoystickCustom : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IDragHandler
 	{
-		
 		public enum AxisOption
 		{
-			// Options for which axes to use
-			Both, // Use both
-			OnlyHorizontal, // Only horizontal
-			OnlyVertical // Only vertical
+			Both, 
+			OnlyHorizontal, 
+			OnlyVertical 
 		}
 
         [Range(1, 100)]
         public int moveRangePercent = 5;
-		 int MovementRange = 10;      //% with the screen width
+		private int movementRange = 10; 
+		
 		public AxisOption axesToUse = AxisOption.Both; // The options for the axes that the still will use
 		public string horizontalAxisName = "Horizontal"; // The name given to the horizontal axis for the cross platform input
 		public string verticalAxisName = "Vertical"; // The name given to the vertical axis for the cross platform input
 
-		Vector3 m_StartPos;
-		bool m_UseX; // Toggle for using the x axis
-		bool m_UseY; // Toggle for using the Y axis
-		CrossPlatformInputManager.VirtualAxis m_HorizontalVirtualAxis; // Reference to the joystick in the cross platform input
-		CrossPlatformInputManager.VirtualAxis m_VerticalVirtualAxis; // Reference to the joystick in the cross platform input
+		private Vector3 mStartPos;
+		private bool mUseX; // Toggle for using the x axis
+		private bool mUseY; // Toggle for using the Y axis
+		private CrossPlatformInputManager.VirtualAxis mHorizontalVirtualAxis; // Reference to the joystick in the cross platform input
+		private CrossPlatformInputManager.VirtualAxis mVerticalVirtualAxis; // Reference to the joystick in the cross platform input
 		public Transform targetDotImage, targetRing;
-		void OnEnable()
+		
+		private void OnEnable()
 		{
 			CreateVirtualAxes();
 		}
 
-        void Start()
+		private void Start()
         {
-            MovementRange = Screen.width * moveRangePercent / 100;
-            m_StartPos = targetDotImage.position;
-			//targetDotImage.gameObject.SetActive (false);
-			//targetRing.gameObject.SetActive (false);
+            movementRange = Screen.width * moveRangePercent / 100;
+            mStartPos = targetDotImage.position;
         }
 
-		void UpdateVirtualAxes(Vector3 value)
+		private void UpdateVirtualAxes(Vector3 value)
 		{
-			var delta = m_StartPos - value;
+			var delta = mStartPos - value;
 			delta.y = -delta.y;
-			delta /= MovementRange;
-			if (m_UseX)
+			delta /= movementRange;
+			if (mUseX)
 			{
-				m_HorizontalVirtualAxis.Update(-delta.x);
+				mHorizontalVirtualAxis.Update(-delta.x);
 			}
 
-			if (m_UseY)
+			if (mUseY)
 			{
-				m_VerticalVirtualAxis.Update(delta.y);
+				mVerticalVirtualAxis.Update(delta.y);
 			}
 		}
 
-		void CreateVirtualAxes()
+		private void CreateVirtualAxes()
 		{
 			// set axes to use
-			m_UseX = (axesToUse == AxisOption.Both || axesToUse == AxisOption.OnlyHorizontal);
-			m_UseY = (axesToUse == AxisOption.Both || axesToUse == AxisOption.OnlyVertical);
+			mUseX = (axesToUse == AxisOption.Both || axesToUse == AxisOption.OnlyHorizontal);
+			mUseY = (axesToUse == AxisOption.Both || axesToUse == AxisOption.OnlyVertical);
 
 			// create new axes based on axes to use
-			if (m_UseX)
+			if (mUseX)
 			{
-				m_HorizontalVirtualAxis = new CrossPlatformInputManager.VirtualAxis(horizontalAxisName);
-				CrossPlatformInputManager.RegisterVirtualAxis(m_HorizontalVirtualAxis);
+				mHorizontalVirtualAxis = new CrossPlatformInputManager.VirtualAxis(horizontalAxisName);
+				CrossPlatformInputManager.RegisterVirtualAxis(mHorizontalVirtualAxis);
 			}
-			if (m_UseY)
+			if (mUseY)
 			{
-				m_VerticalVirtualAxis = new CrossPlatformInputManager.VirtualAxis(verticalAxisName);
-				CrossPlatformInputManager.RegisterVirtualAxis(m_VerticalVirtualAxis);
+				mVerticalVirtualAxis = new CrossPlatformInputManager.VirtualAxis(verticalAxisName);
+				CrossPlatformInputManager.RegisterVirtualAxis(mVerticalVirtualAxis);
 			}
 		}
 
@@ -81,24 +78,24 @@ namespace UnityStandardAssets.CrossPlatformInput
 		{
 			Vector3 newPos = Vector3.zero;
 
-			if (m_UseX)
+			if (mUseX)
 			{
-				int delta = (int)(data.position.x - m_StartPos.x);
+				int delta = (int)(data.position.x - mStartPos.x);
 //				Debug.LogError (delta);
 //				delta = Mathf.Clamp(delta, - MovementRange, MovementRange);
 				newPos.x = delta;
 			}
 
-			if (m_UseY)
+			if (mUseY)
 			{
-				int delta = (int)(data.position.y - m_StartPos.y);
+				int delta = (int)(data.position.y - mStartPos.y);
 //				delta = Mathf.Clamp(delta, -MovementRange, MovementRange);
 				newPos.y = delta;
 			}
 
 //			Debug.LogError (Vector3.ClampMagnitude (new Vector3 (newPos.x, newPos.y, newPos.z), MovementRange));
 //			transform.position = new Vector3(m_StartPos.x + newPos.x, m_StartPos.y + newPos.y, m_StartPos.z + newPos.z);
-			targetDotImage.transform.position = Vector3.ClampMagnitude( new Vector3(newPos.x, newPos.y, newPos.z),MovementRange) + m_StartPos;
+			targetDotImage.transform.position = Vector3.ClampMagnitude( new Vector3(newPos.x, newPos.y, newPos.z),movementRange) + mStartPos;
 			UpdateVirtualAxes(targetDotImage.transform.position);
 		}
 
@@ -107,31 +104,29 @@ namespace UnityStandardAssets.CrossPlatformInput
 		{
 //			targetDotImage.transform.position = m_StartPos;
 //
-			UpdateVirtualAxes(m_StartPos);
+			UpdateVirtualAxes(mStartPos);
 			targetDotImage.gameObject.SetActive (false);
 			targetRing.gameObject.SetActive (false);
 
 		}
-
-
+		
 		public void OnPointerDown(PointerEventData data) {
-			m_StartPos = data.position;
-			targetDotImage.transform.position = m_StartPos;
-			targetRing.transform.position = m_StartPos;
+			mStartPos = data.position;
+			targetDotImage.transform.position = mStartPos;
+			targetRing.transform.position = mStartPos;
 			targetDotImage.gameObject.SetActive (true);
 			targetRing.gameObject.SetActive (true);
 		}
 
-		void OnDisable()
+		private void OnDisable()
 		{
-			// remove the joysticks from the cross platform input
-			if (m_UseX)
+			if (mUseX)
 			{
-				m_HorizontalVirtualAxis.Remove();
+				mHorizontalVirtualAxis.Remove();
 			}
-			if (m_UseY)
+			if (mUseY)
 			{
-				m_VerticalVirtualAxis.Remove();
+				mVerticalVirtualAxis.Remove();
 			}
 		}
 	}

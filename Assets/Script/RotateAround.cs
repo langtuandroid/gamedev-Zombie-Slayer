@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using Script;
 
 public class RotateAround : MonoBehaviour, IListener {
 	public enum Type{Clk, CClk}

@@ -38,7 +38,7 @@ namespace Prefab.UI.Shop
 					break;
 				}
 			}
-			SoundManager.Click ();
+			SoundManagerZS.Click ();
 		}
 
 		private void SetActiveBut(int i)

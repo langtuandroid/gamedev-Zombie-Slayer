@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Script;
 using UnityEngine;
 [AddComponentMenu("ADDP/Enemy AI/Melee Attack")]
 public class EnemyMeleeAttack : MonoBehaviour {
@@ -81,7 +82,7 @@ public class EnemyMeleeAttack : MonoBehaviour {
                     }
 
                     if (soundAttacks.Length > 0)
-                        SoundManager.PlaySfx(soundAttacks[Random.Range(0, soundAttacks.Length)], soundAttacksVol);
+                        SoundManagerZS.PlaySfx(soundAttacks[Random.Range(0, soundAttacks.Length)], soundAttacksVol);
                 }
             }
         }

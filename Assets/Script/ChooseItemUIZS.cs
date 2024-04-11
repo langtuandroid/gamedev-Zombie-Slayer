@@ -4,6 +4,7 @@ using Script;
 using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
+using Zenject;
 
 public class ChooseItemUIZS : MonoBehaviour
 {
@@ -11,6 +12,8 @@ public class ChooseItemUIZS : MonoBehaviour
     [FormerlySerializedAs("gunID")] [SerializeField] private  GunTypeIDZS gunIDD;
     [FormerlySerializedAs("unlockBtn")] [SerializeField] private  GameObject unlockButton;
     [FormerlySerializedAs("pick")] [SerializeField] private  Image pickK;
+
+    [Inject] private MainMenuHomeSceneZS mainMenuHomeSceneZs;
     
     private Button ownerButtonZs;
 
@@ -34,12 +37,12 @@ public class ChooseItemUIZS : MonoBehaviour
 
     public void OpenShop()
     {
-        MainMenuHomeScene.Instance.OpenShop(true);
+        mainMenuHomeSceneZs.OpenShop(true);
     }
 
     public void SetGun()
     {
-        SoundManager.PlaySfx(SoundManager.Instance.chooseGun);
+        SoundManagerZS.PlaySfx(SoundManagerZS.Instance.chooseGun);
         GlobalValueZS.pickGun(gunIDD);
 
         if(GunManagerZS.Instance)

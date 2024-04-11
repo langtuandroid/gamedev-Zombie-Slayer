@@ -69,7 +69,7 @@ public class BoostItemUIZS : MonoBehaviour
     #region Double Arrow
     public void ActiveDoubleArror()
     {
-        SoundManager.PlaySfx(SoundManager.Instance.BTsoundUseBoost);
+        SoundManagerZS.PlaySfx(SoundManagerZS.Instance.bTsoundUseBoost);
         GlobalValueZS.ItemDoubleArrow--;
         daRemainTxt.text = "x" + GlobalValueZS.ItemDoubleArrow;
         daButton.interactable = false;     //only active per game level
@@ -102,7 +102,7 @@ public class BoostItemUIZS : MonoBehaviour
 
     #region Poison Arrow
     public void ActivePoisonArrow() {
-        SoundManager.PlaySfx(SoundManager.Instance.BTsoundUseBoost);
+        SoundManagerZS.PlaySfx(SoundManagerZS.Instance.bTsoundUseBoost);
         GlobalValueZS.ItemPoison--;
         paRemainTxt.text = "x" + GlobalValueZS.ItemPoison;
         paButton.interactable = false; 
@@ -134,7 +134,7 @@ public class BoostItemUIZS : MonoBehaviour
 
     #region Freeze Arrow
     public void ActiveFreezeArrow() {
-        SoundManager.PlaySfx(SoundManager.Instance.BTsoundUseBoost);
+        SoundManagerZS.PlaySfx(SoundManagerZS.Instance.bTsoundUseBoost);
         GlobalValueZS.ItemFreeze--;
         faRemainTxt.text = "x" + GlobalValueZS.ItemFreeze;
         faButton.interactable = false;
@@ -175,7 +175,7 @@ public class BoostItemUIZS : MonoBehaviour
         }
         else
         {
-            SoundManager.PlaySfx(SoundManager.Instance.BTsoundOpen);
+            SoundManagerZS.PlaySfx(SoundManagerZS.Instance.bTsoundOpen);
             boostItemAnim.SetBool("show", true);
             boostButtonAnim.SetBool("on", true);
             RunTimerAutoHideBoostPanel();
@@ -199,7 +199,7 @@ public class BoostItemUIZS : MonoBehaviour
 
     private void HideBoostPanelL()
     {
-        SoundManager.PlaySfx(SoundManager.Instance.BTsoundHide);
+        SoundManagerZS.PlaySfx(SoundManagerZS.Instance.bTsoundHide);
         boostItemAnim.SetBool("show", false);
         boostButtonAnim.SetBool("on", false);
     }

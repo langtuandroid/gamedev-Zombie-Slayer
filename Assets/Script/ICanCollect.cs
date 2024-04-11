@@ -1,8 +1,7 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public interface ICanCollect
+﻿namespace Script
 {
-    void CollectT();
+    public interface ICanCollect
+    {
+        public void CollectT();
+    }
 }

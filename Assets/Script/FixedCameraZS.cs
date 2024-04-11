@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using Zenject;
 
 namespace Script
 {
@@ -6,12 +7,14 @@ namespace Script
     {
         [ReadOnly] public float fixedWidth;
         private readonly float orthographicSize = 3.8f;
+
+        [Inject] private GameModeZS gameModeZs;
    
         private void Start()
         {
-            if (GameMode.Instance)
+            if (gameModeZs)
             {
-                fixedWidth = orthographicSize * (GameMode.Instance.resolution.x / GameMode.Instance.resolution.y);
+                fixedWidth = orthographicSize * (gameModeZs.resolution.x / gameModeZs.resolution.y);
                 Camera.main.orthographicSize = fixedWidth / (Camera.main.aspect);
             }
         }

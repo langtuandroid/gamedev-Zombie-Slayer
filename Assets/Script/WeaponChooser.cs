@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Script;
 using UnityEngine;
 using UnityEngine.UI;
+using Zenject;
 
 public class WeaponChooser : MonoBehaviour
 {
@@ -11,6 +12,8 @@ public class WeaponChooser : MonoBehaviour
     public GunTypeIDZS[] listGunA;
     public GunTypeIDZS[] listGunB;
 
+    [Inject] private MainMenuHomeSceneZS mainMenuHomeSceneZs;
+    
     private void Awake()
     {
         Instance = this;
@@ -95,6 +98,6 @@ public class WeaponChooser : MonoBehaviour
 
     public void PlayGame()
     {
-        MainMenuHomeScene.Instance.LoadScene();
+        mainMenuHomeSceneZs.LoadScene();
     }
 }

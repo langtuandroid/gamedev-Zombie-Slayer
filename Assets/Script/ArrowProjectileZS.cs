@@ -96,7 +96,7 @@ namespace Script
             {
                 if (transform.position.y < disableAtYPosS)
                 {
-                    SoundManager.PlaySfx(soundHitNothing, soundHitNothingVolume);
+                    SoundManagerZS.PlaySfx(soundHitNothing, soundHitNothingVolume);
                     StartCoroutine(DestroyProjectileE(3));
                     isHitT = true;
                 }
@@ -152,13 +152,13 @@ namespace Script
 
         public void TakeDamageE(float damage, Vector2 force, Vector2 hitPoint, GameObject instigator, BODYPART bodyPart = BODYPART.NONE)
         {
-            SoundManager.PlaySfx(soundHitNothing, soundHitNothingVolume);
+            SoundManagerZS.PlaySfx(soundHitNothing, soundHitNothingVolume);
             StartCoroutine(DestroyProjectileE(1));
         }
 
         protected override void OnCollideOther(Collider2D other)
         {
-            SoundManager.PlaySfx(soundHitNothing, soundHitNothingVolume);
+            SoundManagerZS.PlaySfx(soundHitNothing, soundHitNothingVolume);
             StartCoroutine(DestroyProjectileE(3));
             if (parentToHitObjectT)
                 transform.parent = other.gameObject.transform;
@@ -171,7 +171,7 @@ namespace Script
             base.OnCollideTakeDamageE(other, takedamage);
 
             takedamage.TakeDamageE(damageE, Vector2.zero, transform.position, Owner,BODYPART.NONE, arrowEffectT, forceEffectT);
-            SoundManager.PlaySfx(soundHitEnemy, soundHitEnemyVolume);
+            SoundManagerZS.PlaySfx(soundHitEnemy, soundHitEnemyVolume);
             StartCoroutine(DestroyProjectileE(0));
 
             if (parentToHitObjectT)

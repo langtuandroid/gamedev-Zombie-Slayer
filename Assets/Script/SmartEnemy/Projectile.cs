@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using Script;
 
 public abstract class Projectile : MonoBehaviour {
     public float Speed = 3;

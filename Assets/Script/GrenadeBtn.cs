@@ -3,17 +3,20 @@ using System.Collections.Generic;
 using Script;
 using UnityEngine;
 using UnityEngine.UI;
+using Zenject;
 
 public class GrenadeBtn : MonoBehaviour
 {
     public Text priceTxt;
 
     int price = 0;
+    
+    [Inject] private GameModeZS gameModeZs;
 
     private void Start()
     {
-        if (GameMode.Instance)
-            price = GameMode.Instance.grenadePrice;
+        if (gameModeZs)
+            price = gameModeZs.grenadePrice;
 
         priceTxt.text = "$" + price.ToString();
     }
@@ -26,6 +29,6 @@ public class GrenadeBtn : MonoBehaviour
             GlobalValueZS.SavedCoins -= price;
         }
         else
-            SoundManager.PlaySfx(SoundManager.Instance.soundNotEnoughCoin);
+            SoundManagerZS.PlaySfx(SoundManagerZS.Instance.soundNotEnoughCoin);
     }
 }

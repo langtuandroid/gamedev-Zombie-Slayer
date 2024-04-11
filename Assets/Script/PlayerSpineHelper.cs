@@ -1,21 +1,20 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+using UnityEngine.Serialization;
 
-public class PlayerSpineHelper : MonoBehaviour
+namespace Script
 {
-    [Header("Fire Point object")]
-    public Transform firePointObj;
-
-    private void Start()
+    public class PlayerSpineHelper : MonoBehaviour
     {
+        [FormerlySerializedAs("firePointObj")]
+        [Header("Fire Point object")]
+        [SerializeField] private Transform firePointObjT;
 
-    }
-    public Vector2 GetFireWorldPoint()
-    {
-        Vector3 _point;
-            _point = firePointObj.position;
+        public Vector2 GetFireWorldPointT()
+        {
+            Vector3 _point;
+            _point = firePointObjT.position;
 
-        return _point;
+            return _point;
+        }
     }
 }

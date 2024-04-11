@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Script;
 using UnityEngine;
 
 public class BulletPackZS : MonoBehaviour, ICanCollect
@@ -10,7 +11,7 @@ public class BulletPackZS : MonoBehaviour, ICanCollect
     public void CollectT()
     {
         GunManagerZS.Instance.AddBulletT(amount);
-        SoundManager.PlaySfx(sound);
+        SoundManagerZS.PlaySfx(sound);
         Destroy(gameObject);
     }
 }

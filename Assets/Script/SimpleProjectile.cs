@@ -90,21 +90,21 @@ public class SimpleProjectile : Projectile, ICanTakeDamage, IListener
 
 	public void TakeDamageE(float damage, Vector2 force, Vector2 hitPoint, GameObject instigator, BODYPART bodyPart = BODYPART.NONE, WeaponEffect weaponEffect = null, WEAPON_EFFECT forceEffect = WEAPON_EFFECT.NONE)
     {
-		SoundManager.PlaySfx (soundHitNothing, soundHitNothingVolume);
+		SoundManagerZS.PlaySfx (soundHitNothing, soundHitNothingVolume);
 		DestroyProjectile ();
 	}
 
 	protected override void OnCollideOther (Collider2D other)
 	{
 //		other.gameObject.SendMessageUpwards ("TakeDamage", SendMessageOptions.DontRequireReceiver);
-		SoundManager.PlaySfx (soundHitNothing, soundHitNothingVolume);
+		SoundManagerZS.PlaySfx (soundHitNothing, soundHitNothingVolume);
 		DestroyProjectile ();
 	}
 
 	protected override void OnCollideTakeDamageE (Collider2D other, ICanTakeDamage takedamage)
 	{
 		takedamage.TakeDamageE ((NewDamage == 0 ? Damage : NewDamage), Vector2.zero, transform.position, Owner, BODYPART.NONE,weaponEffect);
-		SoundManager.PlaySfx (soundHitEnemy, soundHitEnemyVolume);
+		SoundManagerZS.PlaySfx (soundHitEnemy, soundHitEnemyVolume);
 		DestroyProjectile ();
 	}
 

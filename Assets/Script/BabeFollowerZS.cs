@@ -20,7 +20,7 @@ namespace Script
         [SerializeField] private Vector2 healthBarOffsetT = new Vector2(0, 1.5f);
 
         private float currentHealthH;
-        protected HealthBarEnemyNew HealthBar;
+        protected HealthBarEnemyNewZS HealthBar;
         private bool IsFacingRight { get { return transform.rotation.eulerAngles.y == 0; } }
 
         private void Start()
@@ -29,8 +29,8 @@ namespace Script
                 animM = GetComponent<Animator>();
 
             currentHealthH = healthH;
-            var healthBarObj = (HealthBarEnemyNew)Resources.Load("HealthBar", typeof(HealthBarEnemyNew));
-            HealthBar = (HealthBarEnemyNew)Instantiate(healthBarObj, healthBarOffsetT, Quaternion.identity);
+            var healthBarObj = (HealthBarEnemyNewZS)Resources.Load("HealthBar", typeof(HealthBarEnemyNewZS));
+            HealthBar = (HealthBarEnemyNewZS)Instantiate(healthBarObj, healthBarOffsetT, Quaternion.identity);
 
             HealthBar.Init(transform, (Vector3)healthBarOffsetT);
         }
@@ -80,17 +80,17 @@ namespace Script
         {
             currentHealthH -= damage;
             if (HealthBar)
-                HealthBar.UpdateValue(currentHealthH / (float)healthH);
+                HealthBar.UpdateValueE(currentHealthH / (float)healthH);
             if (currentHealthH <= 0)
             {
                 GameManagerZS.Instance.GameOver();
                 animM.SetTrigger("dead");
-                SoundManager.PlaySfx(soundDieE);
+                SoundManagerZS.PlaySfx(soundDieE);
             }
             else
             {
                 animM.SetTrigger("hurt");
-                SoundManager.PlaySfx(soundHurtT);
+                SoundManagerZS.PlaySfx(soundHurtT);
             }
         }
     }

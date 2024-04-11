@@ -97,7 +97,7 @@ namespace Script
 
 		public void VictoryY(){
 			Time.timeScale = 1;
-			SoundManager.Instance.PauseMusic(true);
+			SoundManagerZS.Instance.PauseMusicC(true);
 			state = GameState.Success;
 
 			foreach (var item in Listeners)
@@ -124,7 +124,7 @@ namespace Script
 
 		public void GameOver(){
 			Time.timeScale = 1;
-			SoundManager.Instance.PauseMusic(true);
+			SoundManagerZS.Instance.PauseMusicC(true);
       
 			if (state == GameState.GameOver)
 				return;

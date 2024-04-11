@@ -95,7 +95,7 @@ namespace Script
                                     target.TakeDamageE(lightingDamage, Vector2.zero, target.gameObject.transform.position, gameObject, BODYPART.NONE, _weaponFX);
                                     if (lightingFX)
                                         SpawnSystemHelper.GetNextObject(lightingFX, true).transform.position = target.gameObject.transform.position;
-                                    SoundManager.PlaySfx(lightingSound);
+                                    SoundManagerZS.PlaySfx(lightingSound);
                                     yield return new WaitForSeconds(Random.Range(0.1f, 0.2f));
                                     break;
                                 case AffectZoneType.Frozen:
@@ -107,7 +107,7 @@ namespace Script
                                         _fx.GetComponent<AutoDestroyZS>().Init(frozenAffectTime);
                                         _fx.transform.position = target.gameObject.transform.position;
                                     }
-                                    SoundManager.PlaySfx(frozenSound);
+                                    SoundManagerZS.PlaySfx(frozenSound);
                                     yield return new WaitForSeconds(Random.Range(0.1f, 0.2f));
                                     break;
                                 case AffectZoneType.Poison:
@@ -118,7 +118,7 @@ namespace Script
                                         _fx.GetComponent<AutoDestroyZS>().Init(poisonAffectTime);
                                         _fx.transform.position = target.gameObject.transform.position;
                                     }
-                                    SoundManager.PlaySfx(poisonSound);
+                                    SoundManagerZS.PlaySfx(poisonSound);
                                     break;
                             }
                         }

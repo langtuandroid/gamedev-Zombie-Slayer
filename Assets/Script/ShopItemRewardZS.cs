@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Advertisements;
 using UnityEngine.Serialization;
+using Zenject;
 
 public class ShopItemRewardZS : MonoBehaviour {
     [SerializeField] private string itemNameE = "ITEM NAME";
@@ -20,12 +21,14 @@ public class ShopItemRewardZS : MonoBehaviour {
     [FormerlySerializedAs("coinPrice")] [ReadOnly] public int coinPriceE = 1;
 	[FormerlySerializedAs("coinTxt")] public Text coinTxtT;
 
+    [Inject] private GameModeZS gameModeZs;
+    
     private void OnEnable(){
 		UpdateAmountT ();
 	}
 
 	private void Start(){
-        if (GameMode.Instance)
+        if (gameModeZs)
         {
     
         }
@@ -47,7 +50,7 @@ public class ShopItemRewardZS : MonoBehaviour {
         }
         else
         {
-            SoundManager.PlaySfx(SoundManager.Instance.soundNotEnoughCoin);
+            SoundManagerZS.PlaySfx(SoundManagerZS.Instance.soundNotEnoughCoin);
 	        //if (AdsManager.Instance && AdsManager.Instance.isRewardedAdReady())
                 NotEnoughCoins.Instance.ShowUp();
         }
@@ -70,7 +73,7 @@ public class ShopItemRewardZS : MonoBehaviour {
         }
 
 		UpdateAmountT ();
-        SoundManager.PlaySfx(SoundManager.Instance.soundPurchased);
+        SoundManagerZS.PlaySfx(SoundManagerZS.Instance.soundPurchased);
 	}
 
     private void UpdateAmountT()

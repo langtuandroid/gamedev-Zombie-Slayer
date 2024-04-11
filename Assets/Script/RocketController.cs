@@ -10,7 +10,7 @@ public class RocketController : MonoBehaviour
 
     public void TriggerFire()
     {
-        SoundManager.PlaySfx(soundExplosion);
+        SoundManagerZS.PlaySfx(soundExplosion);
         if(explosionFX)
         Instantiate(explosionFX, transform.position, Quaternion.identity);
         var allEnemy = FindObjectsOfType<Enemy>();

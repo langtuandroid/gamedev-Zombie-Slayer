@@ -7,7 +7,7 @@ namespace Script
     public class BarrelZS : MonoBehaviour,ICanTakeDamage
     {
         public BARREL_TYPE barrelType; 
-        protected HealthBarEnemyNew healthBarR;
+        protected HealthBarEnemyNewZS healthBarR;
         public int health = 10;
         public Vector2 healthBarOffset = new Vector2(0, 1.5f);
         private int currentHealthH;
@@ -35,13 +35,13 @@ namespace Script
             currentHealthH -= (int)damage;
 
             if (healthBarR)
-                healthBarR.UpdateValue(currentHealthH / (float)health);
+                healthBarR.UpdateValueE(currentHealthH / (float)health);
 
             if (currentHealthH <= 0)
             {
                 if (blowFX)
                     Instantiate(blowFX, transform.position + (Vector3) blowOffset, blowFX.transform.rotation);
-                SoundManager.PlaySfx(blowSound);
+                SoundManagerZS.PlaySfx(blowSound);
 
                 if(barrelType == BARREL_TYPE.Rewarded && spawnItem.Length>0)
                 {
@@ -66,7 +66,7 @@ namespace Script
             else
             {
                 animM.SetTrigger("hit");
-                SoundManager.PlaySfx(hitSound);
+                SoundManagerZS.PlaySfx(hitSound);
             }
         }
 
@@ -74,8 +74,8 @@ namespace Script
         private void Start()
         {
             animM = GetComponent<Animator>();
-            var healthBarObj = (HealthBarEnemyNew)Resources.Load("HealthBar", typeof(HealthBarEnemyNew));
-            healthBarR = (HealthBarEnemyNew)Instantiate(healthBarObj, healthBarOffset, Quaternion.identity);
+            var healthBarObj = (HealthBarEnemyNewZS)Resources.Load("HealthBar", typeof(HealthBarEnemyNewZS));
+            healthBarR = (HealthBarEnemyNewZS)Instantiate(healthBarObj, healthBarOffset, Quaternion.identity);
             healthBarR.Init(transform, (Vector3)healthBarOffset);
             currentHealthH = health;
             activeDistance = 0.5f + Camera.main.aspect * Camera.main.orthographicSize;

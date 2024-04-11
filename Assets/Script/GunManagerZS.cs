@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Script;
 using UnityEngine;
 using UnityEngine.Serialization;
+using Zenject;
 
 public class GunManagerZS : MonoBehaviour
 {
@@ -12,6 +13,8 @@ public class GunManagerZS : MonoBehaviour
     [FormerlySerializedAs("listGunPicked")] [ReadOnly]  [SerializeField] private List<GunTypeIDZS> listGunPickedD;
 
     private int currentPosS = 0;
+    
+    [Inject] private GameModeZS gameModeZs;
 
     private void Awake()
     {
@@ -20,7 +23,7 @@ public class GunManagerZS : MonoBehaviour
         else
         {
             Instance = this;
-            if (GameMode.Instance)
+            if (gameModeZs)
             {
                 foreach (var gun in listGunN)
                 {
@@ -119,7 +122,7 @@ public class GunManagerZS : MonoBehaviour
         }
 
         GameManagerZS.Instance.player.SetGun(listGunPickedD[currentPosS]);
-        SoundManager.PlaySfx(SoundManager.Instance.swapGun);
+        SoundManagerZS.PlaySfx(SoundManagerZS.Instance.swapGun);
     }
 
     public void NextGunN(GunTypeIDZS gunIdzs)
@@ -133,7 +136,7 @@ public class GunManagerZS : MonoBehaviour
             {
                 currentPosS = i;
                 GameManagerZS.Instance.player.SetGun(listGunPickedD[currentPosS]);
-                SoundManager.PlaySfx(SoundManager.Instance.swapGun);
+                SoundManagerZS.PlaySfx(SoundManagerZS.Instance.swapGun);
             }
         }
     }

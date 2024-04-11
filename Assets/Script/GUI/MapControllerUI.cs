@@ -28,13 +28,13 @@ public class MapControllerUI : MonoBehaviour {
     }
 
     void OnEnable(){
-		SoundManager.PlayMusic (music);
+		SoundManagerZS.PlayMusicC (music);
 		Debug.LogWarning ("ON ENALBE");
 
 	}
 
 	void OnDisable(){
-		SoundManager.PlayMusic (SoundManager.Instance.musicsGame);
+		SoundManagerZS.PlayMusicC (SoundManagerZS.Instance.musicsGame);
 	}
 
     public void SetCurrentWorld(int world)
@@ -67,7 +67,7 @@ public class MapControllerUI : MonoBehaviour {
     {
         allowPressButton = false;
 
-        SoundManager.Click();
+        SoundManagerZS.Click();
 
         if (newPosX != (-step * (howManyBlocks - 1)))
         {
@@ -90,11 +90,11 @@ public class MapControllerUI : MonoBehaviour {
 
         }
 
-        BlackScreenUI.instance.Show(0.15f);
+        BlackScreenUIZS.Instance.Show(0.15f);
 
         yield return new WaitForSeconds(0.15f);
         SetMapPosition();
-        BlackScreenUI.instance.Hide(0.15f);
+        BlackScreenUIZS.Instance.Hide(0.15f);
 
         SetWorldNumber();
 
@@ -114,7 +114,7 @@ public class MapControllerUI : MonoBehaviour {
     IEnumerator PreCo()
     {
         allowPressButton = false;
-        SoundManager.Click();
+        SoundManagerZS.Click();
         if (newPosX != 0)
         {
             currentPos--;
@@ -135,11 +135,11 @@ public class MapControllerUI : MonoBehaviour {
 
         }
 
-        BlackScreenUI.instance.Show(0.15f);
+        BlackScreenUIZS.Instance.Show(0.15f);
 
         yield return new WaitForSeconds(0.15f);
         SetMapPosition();
-        BlackScreenUI.instance.Hide(0.15f);
+        BlackScreenUIZS.Instance.Hide(0.15f);
 
         SetWorldNumber();
 
@@ -151,6 +151,6 @@ public class MapControllerUI : MonoBehaviour {
 	public void UnlockAllLevels(){
 		GlobalValueZS.LevelPass = (GlobalValueZS.LevelPass + 1000);
 		UnityEngine.SceneManagement.SceneManager.LoadScene (UnityEngine.SceneManagement.SceneManager.GetActiveScene ().buildIndex);
-		SoundManager.Click ();
+		SoundManagerZS.Click ();
 	}
 }

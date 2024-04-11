@@ -30,7 +30,7 @@ public class UnityAdsItemZS : MonoBehaviour
         if (isSuccess)
         {
             GlobalValueZS.SavedCoins += rewarded;
-            SoundManager.PlaySfx(SoundManager.Instance.soundPurchased);
+            SoundManagerZS.PlaySfx(SoundManagerZS.Instance.soundPurchased);
         }
     }
 }

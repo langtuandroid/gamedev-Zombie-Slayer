@@ -17,7 +17,7 @@ public class ShellParticleSound : MonoBehaviour
         if (!allowPlaySound)
             return;
 
-        SoundManager.PlaySfx(shellSound, shellSoundVolume);
+        SoundManagerZS.PlaySfx(shellSound, shellSoundVolume);
 
         allowPlaySound = false;
     }

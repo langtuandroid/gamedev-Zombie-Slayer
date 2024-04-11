@@ -1,433 +1,436 @@
 using System.Collections;
-using System.Collections.Generic;
-using Script;
 using UnityEngine;
 using UnityEngine.Serialization;
 using UnityStandardAssets.CrossPlatformInput;
 
-public enum GunHandlerState { AVAILABLE, SWAPPING, RELOADING, EMPTY }
-public enum ShootingMethob { SingleShoot, AutoShoot}
-public enum WEAPON_STATE { MELEE, GUN}
-[RequireComponent(typeof(PlayerSpineHelper))]
-public class PlayerController : MonoBehaviour, ICanTakeDamage
+namespace Script
 {
-    [Header("SET UP")]
-
-    public Animator anim;
-    public float moveSpeed = 10;
-    public float limitAbovePos = -0.8f;
-    public float limitBelowPos = -3.65f;
-    [ReadOnly] public float limitLeft;
-    [ReadOnly] public float limitRight;
-    public AudioClip soundHurt, soundDie;
-
-    [Header("BLOCK LAYER")]
-    public LayerMask blockWayLayerMask;
-
-    [Header("HEALTH")]
-    [Range(0, 5000)]
-    public int health = 100;
-    public Vector2 healthBarOffset = new Vector2(0, 1.5f);
-
-    float currentHealth;
-
-    [Header("GRENADE")]
-    public GameObject grenade;
-    public Transform throwPoint;
-
-    [Header("WEAPONS")]
-    [ReadOnly] public WEAPON_STATE weaponState;
-    [ReadOnly] public GunHandlerState GunState;
-    [FormerlySerializedAs("gunTypeID")] [ReadOnly] public GunTypeIDZS gunTypeIdzs;
-    public LayerMask targetLayer;
-    float lastTimeShooting = -999;
-    public AudioClip throwGrenadeSound;
-    bool allowShooting = true;
-    protected HealthBarEnemyNew healthBar;
-    PlayerSpineHelper playerSpineHelper;
-    public bool isFacingRight { get { return transform.rotation.eulerAngles.y == 0; } }
-
-    private void Start()
+    public enum GunHandlerState { AVAILABLE, SWAPPING, RELOADING, EMPTY }
+    public enum ShootingMethob { SingleShoot, AutoShoot}
+    public enum WeaponState { MELEE, GUN}
+    [RequireComponent(typeof(PlayerSpineHelper))]
+    public class PlayerController : MonoBehaviour, ICanTakeDamage
     {
-        if (anim == null)
-            anim = GetComponent<Animator>();
+        [Header("SET UP")]
 
-        GameManagerZS.Instance.player = this;
-        gunTypeIdzs = GunManagerZS.Instance.GetGunID();
-        SetGun(gunTypeIdzs);
-        GunManagerZS.Instance.ResetGunBullet();
+        public Animator anim;
+        public float moveSpeed = 10;
+        public float limitAbovePos = -0.8f;
+        public float limitBelowPos = -3.65f;
+        [ReadOnly] [SerializeField] private float limitLeft;
+        [ReadOnly] [SerializeField] private float limitRight;
+        public AudioClip soundHurt, soundDie;
 
-        playerSpineHelper = GetComponent<PlayerSpineHelper>();
-        playerMeleeWeapon = GetComponent<PlayerMeleeWeapon>();
+        [Header("BLOCK LAYER")]
+        public LayerMask blockWayLayerMask;
 
-        currentHealth = health;
-        var healthBarObj = (HealthBarEnemyNew)Resources.Load("HealthBar", typeof(HealthBarEnemyNew));
-        healthBar = (HealthBarEnemyNew)Instantiate(healthBarObj, healthBarOffset, Quaternion.identity);
+        [Header("HEALTH")]
+        [Range(0, 5000)]
+        [SerializeField] public int health = 100;
+        [SerializeField] public Vector2 healthBarOffset = new Vector2(0, 1.5f);
 
-        healthBar.Init(transform, (Vector3)healthBarOffset);
-    }
+        [SerializeField] private float currentHealthH;
 
-    private void OnEnable()
-    {
-        if (GameManagerZS.Instance)
+        [Header("GRENADE")]
+        [SerializeField] private GameObject grenade;
+        [SerializeField] private Transform throwPoint;
+
+        [Header("WEAPONS")]
+        [ReadOnly]  [SerializeField] private WeaponState weaponState;
+        [FormerlySerializedAs("GunState")] [ReadOnly]  [SerializeField] private GunHandlerState gunState;
+        [FormerlySerializedAs("gunTypeID")] [ReadOnly] public GunTypeIDZS gunTypeIdzs;
+        [SerializeField] private LayerMask targetLayer;
+        [SerializeField] private float lastTimeShootingG = -999;
+        [SerializeField] private AudioClip throwGrenadeSound;
+        [SerializeField] private bool allowShootingG = true;
+
+        private HealthBarEnemyNewZS healthBarR;
+        private PlayerSpineHelper playerSpineHelperR;
+    
+        public bool IsFacingRight => transform.rotation.eulerAngles.y == 0;
+
+        private void Start()
+        {
+            if (anim == null)
+                anim = GetComponent<Animator>();
+
             GameManagerZS.Instance.player = this;
-    }
-    public Vector2 finalSpeed;
+            gunTypeIdzs = GunManagerZS.Instance.GetGunID();
+            SetGun(gunTypeIdzs);
+            GunManagerZS.Instance.ResetGunBullet();
 
-    private void GetLimitHorizontal()
-    {
-        limitLeft = Camera.main.ViewportToWorldPoint(Vector3.zero).x + 0.5f;
-        limitRight = Camera.main.ViewportToWorldPoint(Vector3.right).x - 0.5f;
-    }
+            playerSpineHelperR = GetComponent<PlayerSpineHelper>();
+            playerMeleeWeaponZs = GetComponent<PlayerMeleeWeaponZS>();
 
-    void Update()
-    {
-        if (GameManagerZS.Instance.state != GameManagerZS.GameState.Playing)
-            return;
+            currentHealthH = health;
+            var healthBarObj = (HealthBarEnemyNewZS)Resources.Load("HealthBar", typeof(HealthBarEnemyNewZS));
+            healthBarR = (HealthBarEnemyNewZS)Instantiate(healthBarObj, healthBarOffset, Quaternion.identity);
 
-        GetInput();
+            healthBarR.Init(transform, (Vector3)healthBarOffset);
+        }
 
-        finalSpeed = input * moveSpeed * Time.deltaTime;
+        private void OnEnable()
+        {
+            if (GameManagerZS.Instance)
+                GameManagerZS.Instance.player = this;
+        }
+        public Vector2 finalSpeed;
 
-        GetLimitHorizontal();
-        if (finalSpeed.x > 0 && transform.position.x >= limitRight)
-            finalSpeed.x = 0;
-        else if (finalSpeed.x < 0 && transform.position.x <= limitLeft)
-            finalSpeed.x = 0;
+        private void GetLimitHorizontal()
+        {
+            limitLeft = Camera.main.ViewportToWorldPoint(Vector3.zero).x + 0.5f;
+            limitRight = Camera.main.ViewportToWorldPoint(Vector3.right).x - 0.5f;
+        }
 
-        if ((finalSpeed.x > 0 && !isFacingRight) || (finalSpeed.x < 0 && isFacingRight))
-            Flip();
+        private void Update()
+        {
+            if (GameManagerZS.Instance.state != GameManagerZS.GameState.Playing)
+                return;
+
+            GetInput();
+
+            finalSpeed = inputT * moveSpeed * Time.deltaTime;
+
+            GetLimitHorizontal();
+            if (finalSpeed.x > 0 && transform.position.x >= limitRight)
+                finalSpeed.x = 0;
+            else if (finalSpeed.x < 0 && transform.position.x <= limitLeft)
+                finalSpeed.x = 0;
+
+            if ((finalSpeed.x > 0 && !IsFacingRight) || (finalSpeed.x < 0 && IsFacingRight))
+                FlipT();
 
        
 
-        if (!isWayBlocked())
-        {
-            transform.Translate(finalSpeed, Space.World);
+            if (!IsWayBlocked())
+            {
+                transform.Translate(finalSpeed, Space.World);
 
-            if(transform.position.y > limitAbovePos)
+                if(transform.position.y > limitAbovePos)
+                {
+                    transform.position = new Vector3(transform.position.x, limitAbovePos, transform.position.z);
+                }else if (transform.position.y < limitBelowPos)
+                {
+                    transform.position = new Vector3(transform.position.x, limitBelowPos, transform.position.z);
+                }
+            }
+
+            healthBarR.transform.localScale = new Vector2(transform.localScale.x > 0 ? Mathf.Abs(healthBarR.transform.localScale.x) : -Mathf.Abs(healthBarR.transform.localScale.x), healthBarR.transform.localScale.y);
+            AnimSetFloatT("speed", inputT.magnitude);
+        }
+
+        private bool IsWayBlocked()
+        {
+            return Physics2D.Raycast(transform.position, inputT, 0.2f, blockWayLayerMask);
+        }
+
+        private Vector2 inputT;
+        private void GetInput()
+        {
+            inputT = new Vector2(CrossPlatformInputManager.GetAxis("Horizontal") + Input.GetAxis("Horizontal"), CrossPlatformInputManager.GetAxis("Vertical") + Input.GetAxis("Vertical"));
+
+            if (gunTypeIdzs.shootingMethod == ShootingMethob.SingleShoot)
             {
-                transform.position = new Vector3(transform.position.x, limitAbovePos, transform.position.z);
-            }else if (transform.position.y < limitBelowPos)
+                if (CrossPlatformInputManager.GetButtonDown("Shoot"))
+                {
+                    Shoot();
+                }
+            }
+
+            else if (gunTypeIdzs.shootingMethod == ShootingMethob.AutoShoot)
             {
-                transform.position = new Vector3(transform.position.x, limitBelowPos, transform.position.z);
+                if (CrossPlatformInputManager.GetButton("Shoot"))
+                {
+                    Shoot();
+                }
+            }
+
+
+            if (CrossPlatformInputManager.GetButtonDown("Melee"))
+            {
+                MeleeAttack();
             }
         }
 
-        healthBar.transform.localScale = new Vector2(transform.localScale.x > 0 ? Mathf.Abs(healthBar.transform.localScale.x) : -Mathf.Abs(healthBar.transform.localScale.x), healthBar.transform.localScale.y);
-        AnimSetFloat("speed", input.magnitude);
-    }
-
-    bool isWayBlocked()
-    {
-        return Physics2D.Raycast(transform.position, input, 0.2f, blockWayLayerMask);
-    }
-
-    Vector2 input;
-    void GetInput()
-    {
-        input = new Vector2(CrossPlatformInputManager.GetAxis("Horizontal") + Input.GetAxis("Horizontal"), CrossPlatformInputManager.GetAxis("Vertical") + Input.GetAxis("Vertical"));
-
-        if (gunTypeIdzs.shootingMethob == ShootingMethob.SingleShoot)
+        private void FlipT()
         {
-            if (CrossPlatformInputManager.GetButtonDown("Shoot"))
+            transform.rotation = Quaternion.Euler(0, IsFacingRight ? 180 : 0, 0);
+        }
+
+        public void AnimSetTrigger(string name)
+        {
+            anim.SetTrigger(name);
+        }
+
+        public void AnimSetSpeed(float value)
+        {
+            if (anim)
+                anim.speed = value;
+        }
+
+        public void AnimSetFloatT(string name, float value)
+        {
+            anim.SetFloat(name, value);
+        }
+
+        public void AnimSetBoolL(string name, bool value)
+        {
+            anim.SetBool(name, value);
+        }
+
+        public void SetStateT(GunHandlerState state)
+        {
+            gunState = state;
+        }
+
+        private void SetAvailabeAfterSwapT()
+        {
+
+            SetStateT(GunHandlerState.AVAILABLE);
+            Debug.Log("SetAvailabeAfterSwap");
+            CheckBulletRemain();
+        }
+
+        public void Shoot()
+        {
+            if (weaponState == WeaponState.MELEE)
             {
-                Shoot();
+                SetGun(GunManagerZS.Instance.GetGunID());
+                return;
             }
-        }
 
-        else if (gunTypeIdzs.shootingMethob == ShootingMethob.AutoShoot)
-        {
-            if (CrossPlatformInputManager.GetButton("Shoot"))
+            if (!allowShootingG || gunTypeIdzs.Bullet <= 0)
+                return;
+
+            if (Time.time < (lastTimeShootingG + gunTypeIdzs.rateE))
+                return;
+
+            if (gunState != GunHandlerState.AVAILABLE)
+                return;
+
+            lastTimeShootingG = Time.time;
+            gunTypeIdzs.Bullet--;
+            AnimSetTrigger("shoot");
+            for (int i = 0; i < gunTypeIdzs.maxBulletPerShootT; i++)
             {
-                Shoot();
+                StartCoroutine(FireCoC());
             }
+
+            if (gunTypeIdzs.shellFXx)
+            {
+                Vector2 shellPos = gunTypeIdzs.shellPointT.position;
+                var _tempFX = SpawnSystemHelper.GetNextObject(gunTypeIdzs.shellFXx, true);
+                _tempFX.transform.position = shellPos;
+            }
+
+            SoundManagerZS.PlaySfx(gunTypeIdzs.soundFireE, gunTypeIdzs.soundFireVolumeE);
+            SoundManagerZS.PlaySfx(gunTypeIdzs.shellSoundD, gunTypeIdzs.shellSoundVolumeE);
+
+            CancelInvoke(nameof(CheckBulletRemain));
+            Invoke(nameof(CheckBulletRemain), gunTypeIdzs.rateE);
+
+            if (gunTypeIdzs.dualShotT)
+                Invoke(nameof(ShootSecondGun), gunTypeIdzs.fireSecondGunDelayY);
         }
 
-
-        if (CrossPlatformInputManager.GetButtonDown("Melee"))
+        private void ShootSecondGun()
         {
-            MeleeAttack();
+            //gunTypeID.bullet--;
+            //SubtractBullet(1);
+            for (int i = 0; i < gunTypeIdzs.maxBulletPerShootT; i++)
+            {
+                StartCoroutine(FireCoC());
+            }
+            SoundManagerZS.PlaySfx(gunTypeIdzs.soundFireE, gunTypeIdzs.soundFireVolumeE);
+            SoundManagerZS.PlaySfx(gunTypeIdzs.shellSoundD, gunTypeIdzs.shellSoundVolumeE);
         }
-    }
 
-    void Flip()
-    {
-        transform.rotation = Quaternion.Euler(0, isFacingRight ? 180 : 0, 0);
-    }
-
-    public void AnimSetTrigger(string name)
-    {
-        anim.SetTrigger(name);
-    }
-
-    public void AnimSetSpeed(float value)
-    {
-        if (anim)
-            anim.speed = value;
-    }
-
-    public void AnimSetFloat(string name, float value)
-    {
-        anim.SetFloat(name, value);
-    }
-
-    public void AnimSetBool(string name, bool value)
-    {
-        anim.SetBool(name, value);
-    }
-
-    public void SetState(GunHandlerState state)
-    {
-        GunState = state;
-    }
-
-    private void SetAvailabeAfterSwap()
-    {
-
-        SetState(GunHandlerState.AVAILABLE);
-        Debug.Log("SetAvailabeAfterSwap");
-        CheckBulletRemain();
-    }
-
-    public void Shoot()
-    {
-        if (weaponState == WEAPON_STATE.MELEE)
+        public IEnumerator FireCoC()
         {
-            SetGun(GunManagerZS.Instance.GetGunID());
-            return;
-        }
-
-        if (!allowShooting || gunTypeIdzs.Bullet <= 0)
-            return;
-
-        if (Time.time < (lastTimeShooting + gunTypeIdzs.rate))
-            return;
-
-        if (GunState != GunHandlerState.AVAILABLE)
-            return;
-
-        lastTimeShooting = Time.time;
-        gunTypeIdzs.Bullet--;
-        AnimSetTrigger("shoot");
-        for (int i = 0; i < gunTypeIdzs.maxBulletPerShoot; i++)
-        {
-            StartCoroutine(FireCo());
-        }
-
-        if (gunTypeIdzs.shellFX)
-        {
-            Vector2 shellPos = gunTypeIdzs.shellPoint.position;
-            var _tempFX = SpawnSystemHelper.GetNextObject(gunTypeIdzs.shellFX, true);
-            _tempFX.transform.position = shellPos;
-        }
-
-        SoundManager.PlaySfx(gunTypeIdzs.soundFire, gunTypeIdzs.soundFireVolume);
-        SoundManager.PlaySfx(gunTypeIdzs.shellSound, gunTypeIdzs.shellSoundVolume);
-
-        CancelInvoke("CheckBulletRemain");
-        Invoke("CheckBulletRemain", gunTypeIdzs.rate);
-
-        if (gunTypeIdzs.dualShot)
-            Invoke("ShootSecondGun", gunTypeIdzs.fireSecondGunDelay);
-    }
-
-    void ShootSecondGun()
-    {
-        //gunTypeID.bullet--;
-        //SubtractBullet(1);
-        for (int i = 0; i < gunTypeIdzs.maxBulletPerShoot; i++)
-        {
-            StartCoroutine(FireCo());
-        }
-        SoundManager.PlaySfx(gunTypeIdzs.soundFire, gunTypeIdzs.soundFireVolume);
-        SoundManager.PlaySfx(gunTypeIdzs.shellSound, gunTypeIdzs.shellSoundVolume);
-    }
-
-    public IEnumerator FireCo()
-    {
         
-        yield return null;
+            yield return null;
 
-        var _dir = (isFacingRight ? Vector2.right : Vector2.left) + new Vector2(0, Random.Range(-(1f - gunTypeIdzs.accuracy), (1f - gunTypeIdzs.accuracy)));
-        RaycastHit2D hit = Physics2D.Raycast(playerSpineHelper.GetFireWorldPoint() + (isFacingRight ? Vector2.left : Vector2.right), _dir, 100, targetLayer);
+            var _dir = (IsFacingRight ? Vector2.right : Vector2.left) + new Vector2(0, Random.Range(-(1f - gunTypeIdzs.accuracyY), (1f - gunTypeIdzs.accuracyY)));
+            RaycastHit2D hit = Physics2D.Raycast(playerSpineHelperR.GetFireWorldPointT() + (IsFacingRight ? Vector2.left : Vector2.right), _dir, 100, targetLayer);
 
-        if (gunTypeIdzs.muzzleTracerFX)
-        {
-            var _tempFX = SpawnSystemHelper.GetNextObject(gunTypeIdzs.muzzleTracerFX, true);
-            _tempFX.transform.position = playerSpineHelper.GetFireWorldPoint();
-            _tempFX.transform.right = _dir;
-        }
-
-        if (gunTypeIdzs.muzzleFX)
-        {
-            var _muzzle = SpawnSystemHelper.GetNextObject(gunTypeIdzs.muzzleFX, playerSpineHelper.GetFireWorldPoint(), true);
-
-            _muzzle.transform.right = (isFacingRight ? Vector2.right : Vector2.left);
-            //_muzzle.transform.parent = firePoint;
-        }
-
-        if (hit)
-        {
-            var takeDamage = (ICanTakeDamage)hit.collider.gameObject.GetComponent(typeof(ICanTakeDamage));
-            if (takeDamage != null)
+            if (gunTypeIdzs.muzzleTracerFXx)
             {
-                var finalDamage = (int)(Random.Range(gunTypeIdzs.minPercentAffect * 0.01f, 1f) * gunTypeIdzs.UpgradeRangeDamage);
+                var _tempFX = SpawnSystemHelper.GetNextObject(gunTypeIdzs.muzzleTracerFXx, true);
+                _tempFX.transform.position = playerSpineHelperR.GetFireWorldPointT();
+                _tempFX.transform.right = _dir;
+            }
 
-                takeDamage.TakeDamageE(finalDamage, Vector2.zero, hit.point, gameObject);
+            if (gunTypeIdzs.muzzleFXx)
+            {
+                var _muzzle = SpawnSystemHelper.GetNextObject(gunTypeIdzs.muzzleFXx, playerSpineHelperR.GetFireWorldPointT(), true);
+
+                _muzzle.transform.right = (IsFacingRight ? Vector2.right : Vector2.left);
+                //_muzzle.transform.parent = firePoint;
+            }
+
+            if (hit)
+            {
+                var takeDamage = (ICanTakeDamage)hit.collider.gameObject.GetComponent(typeof(ICanTakeDamage));
+                if (takeDamage != null)
+                {
+                    var finalDamage = (int)(Random.Range(gunTypeIdzs.minPercentAffecT * 0.01f, 1f) * gunTypeIdzs.UpgradeRangeDamage);
+
+                    takeDamage.TakeDamageE(finalDamage, Vector2.zero, hit.point, gameObject);
+                }
+            }
+
+            if (gunTypeIdzs.reloadPerShootT)
+            {
+                StartCoroutine(ReloadGunSub());
             }
         }
 
-        if (gunTypeIdzs.reloadPerShoot)
+        private void CheckBulletRemain()
         {
-            StartCoroutine(ReloadGunSub());
+            if (gunTypeIdzs.Bullet <= 0)
+            {
+                GunManagerZS.Instance.NextGunN();
+            }
         }
-    }
 
-    void CheckBulletRemain()
-    {
-        if (gunTypeIdzs.Bullet <= 0)
+        public void ReloadGun()
         {
-            GunManagerZS.Instance.NextGunN();
+            SetStateT(GunHandlerState.RELOADING);
+            //SoundManager.PlaySfx (soundReload, soundReloadVolume);
+            AnimSetTrigger("reload");
+            AnimSetBoolL("reloading", true);
+            Invoke("ReloadComplete", gunTypeIdzs.reloadTimeE);
+
+            SoundManagerZS.PlaySfx(gunTypeIdzs.reloadSoundD, gunTypeIdzs.reloadSoundVolumeE);
         }
-    }
 
-    public void ReloadGun()
-    {
-        SetState(GunHandlerState.RELOADING);
-        //SoundManager.PlaySfx (soundReload, soundReloadVolume);
-        AnimSetTrigger("reload");
-        AnimSetBool("reloading", true);
-        Invoke("ReloadComplete", gunTypeIdzs.reloadTime);
-
-        SoundManager.PlaySfx(gunTypeIdzs.reloadSound, gunTypeIdzs.reloadSoundVolume);
-    }
-
-    IEnumerator ReloadGunSub()
-    {
-        SetState(GunHandlerState.RELOADING);
-        AnimSetBool("isReloadPerShootNeeded", true);
-
-        yield return new WaitForSeconds(gunTypeIdzs.reloadTime);
-
-        SetState(GunHandlerState.AVAILABLE);
-        AnimSetBool("isReloadPerShootNeeded", false);
-    }
-
-    public void ReloadComplete()
-    {
-        lastTimeShooting = Time.time;
-        AnimSetBool("reloading", false);
-        SetState(GunHandlerState.AVAILABLE);
-    }
-
-    public void ThrowGrenade()
-    {
-        var obj = (GameObject)SpawnSystemHelper.GetNextObject(grenade, false);
-        SoundManager.PlaySfx(throwGrenadeSound);
-        obj.GetComponent<GrenadeZS>().SetDirection(isFacingRight);
-        obj.transform.position = throwPoint.position;
-        obj.SetActive(true);
-    }
-
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        var isCollectItem = (ICanCollect)collision.GetComponent(typeof(ICanCollect));
-        if (isCollectItem != null)
+        IEnumerator ReloadGunSub()
         {
-            isCollectItem.CollectT();
+            SetStateT(GunHandlerState.RELOADING);
+            AnimSetBoolL("isReloadPerShootNeeded", true);
+
+            yield return new WaitForSeconds(gunTypeIdzs.reloadTimeE);
+
+            SetStateT(GunHandlerState.AVAILABLE);
+            AnimSetBoolL("isReloadPerShootNeeded", false);
         }
-    }
 
-    public void SetGun(GunTypeIDZS gunIdzs)
-    {
-        weaponState = WEAPON_STATE.GUN;
-        anim.runtimeAnimatorController = gunIdzs.animatorOverride;
-        gunTypeIdzs = gunIdzs;
-        AnimSetTrigger("swap-gun");
-        allowShooting = false;
-        SoundManager.PlaySfx(SoundManager.Instance.swapGun);
-        Invoke("AllowShooting", 0.3f);
-    }
-
-    void AllowShooting()
-    {
-        allowShooting = true;
-    }
-
-    #region MELEE ATTACK
-    PlayerMeleeWeapon playerMeleeWeapon;
-
-    public void SetMelee()
-    {
-        weaponState = WEAPON_STATE.MELEE;
-        anim.runtimeAnimatorController = playerMeleeWeapon.animatorOverride;
-        SoundManager.PlaySfx(playerMeleeWeapon.soundSwap);
-        AnimSetTrigger("swap-gun");
-    }
-
-    public void MeleeAttack()
-    {
-        if (weaponState == WEAPON_STATE.GUN)
+        public void ReloadComplete()
         {
-            SetMelee();
-            return;
+            lastTimeShootingG = Time.time;
+            AnimSetBoolL("reloading", false);
+            SetStateT(GunHandlerState.AVAILABLE);
         }
-        if (Time.time > (playerMeleeWeapon.lastAttackTime + playerMeleeWeapon.rate))
+
+        public void ThrowGrenade()
         {
-            playerMeleeWeapon.lastAttackTime = Time.time;
-            AnimSetTrigger("melee-attack");
+            var obj = (GameObject)SpawnSystemHelper.GetNextObject(grenade, false);
+            SoundManagerZS.PlaySfx(throwGrenadeSound);
+            obj.GetComponent<GrenadeZS>().SetDirection(IsFacingRight);
+            obj.transform.position = throwPoint.position;
+            obj.SetActive(true);
+        }
+
+        private void OnTriggerEnter2D(Collider2D collision)
+        {
+            var isCollectItem = (ICanCollect)collision.GetComponent(typeof(ICanCollect));
+            if (isCollectItem != null)
+            {
+                isCollectItem.CollectT();
+            }
+        }
+
+        public void SetGun(GunTypeIDZS gunIdzs)
+        {
+            weaponState = WeaponState.GUN;
+            anim.runtimeAnimatorController = gunIdzs.animatorOverrideE;
+            gunTypeIdzs = gunIdzs;
+            AnimSetTrigger("swap-gun");
+            allowShootingG = false;
+            SoundManagerZS.PlaySfx(SoundManagerZS.Instance.swapGun);
+            Invoke(nameof(AllowShooting), 0.3f);
+        }
+
+        void AllowShooting()
+        {
+            allowShootingG = true;
+        }
+
+        #region MELEE ATTACK
+        PlayerMeleeWeaponZS playerMeleeWeaponZs;
+
+        public void SetMelee()
+        {
+            weaponState = WeaponState.MELEE;
+            anim.runtimeAnimatorController = playerMeleeWeaponZs.animatorOverride;
+            SoundManagerZS.PlaySfx(playerMeleeWeaponZs.soundSwap);
+            AnimSetTrigger("swap-gun");
+        }
+
+        public void MeleeAttack()
+        {
+            if (weaponState == WeaponState.GUN)
+            {
+                SetMelee();
+                return;
+            }
+            if (Time.time > (playerMeleeWeaponZs.lastAttackTime + playerMeleeWeaponZs.rate))
+            {
+                playerMeleeWeaponZs.lastAttackTime = Time.time;
+                AnimSetTrigger("melee-attack");
             
-            Invoke("MeleeCheckEnemy", playerMeleeWeapon.delayToSync);
-        }
-    }
-
-    void MeleeCheckEnemy()
-    {
-        SoundManager.PlaySfx(playerMeleeWeapon.soundAttack);
-        RaycastHit2D hit = Physics2D.CircleCast(playerMeleeWeapon.checkPoint.position, playerMeleeWeapon.radiusCheck, Vector2.zero, 0, targetLayer);
-
-        if (hit)
-        {
-            var takeDamage = (ICanTakeDamage)hit.collider.gameObject.GetComponent(typeof(ICanTakeDamage));
-            if (takeDamage != null)
-            {
-                var finalDamage = (int)(Random.Range(0.8f, 1f) * playerMeleeWeapon.damage);
-
-                takeDamage.TakeDamageE(finalDamage, new Vector2(5,0), hit.point, gameObject);
+                Invoke(nameof(MeleeCheckEnemy), playerMeleeWeaponZs.delayToSync);
             }
         }
-    }
 
-    public void TakeDamageE(float damage, Vector2 force, Vector2 hitPoint, GameObject instigator, BODYPART bodyPart = BODYPART.NONE, WeaponEffect weaponEffect = null, WEAPON_EFFECT forceEffect = WEAPON_EFFECT.NONE)
-    {
-        currentHealth -= damage;
-        if (healthBar)
-            healthBar.UpdateValue(currentHealth / (float)health);
-        if (currentHealth <= 0)
+        private void MeleeCheckEnemy()
         {
-            GameManagerZS.Instance.GameOver();
-            AnimSetTrigger("dead");
-            SoundManager.PlaySfx(soundDie);
+            SoundManagerZS.PlaySfx(playerMeleeWeaponZs.soundAttack);
+            RaycastHit2D hit = Physics2D.CircleCast(playerMeleeWeaponZs.checkPoint.position, playerMeleeWeaponZs.radiusCheck, Vector2.zero, 0, targetLayer);
+
+            if (hit)
+            {
+                var takeDamage = (ICanTakeDamage)hit.collider.gameObject.GetComponent(typeof(ICanTakeDamage));
+                if (takeDamage != null)
+                {
+                    var finalDamage = (int)(Random.Range(0.8f, 1f) * playerMeleeWeaponZs.damage);
+
+                    takeDamage.TakeDamageE(finalDamage, new Vector2(5,0), hit.point, gameObject);
+                }
+            }
         }
-        else
+
+        public void TakeDamageE(float damage, Vector2 force, Vector2 hitPoint, GameObject instigator, BODYPART bodyPart = BODYPART.NONE, WeaponEffect weaponEffect = null, WEAPON_EFFECT forceEffect = WEAPON_EFFECT.NONE)
         {
-            AnimSetTrigger("hurt");
-            SoundManager.PlaySfx(soundHurt);
+            currentHealthH -= damage;
+            if (healthBarR)
+                healthBarR.UpdateValueE(currentHealthH / (float)health);
+            if (currentHealthH <= 0)
+            {
+                GameManagerZS.Instance.GameOver();
+                AnimSetTrigger("dead");
+                SoundManagerZS.PlaySfx(soundDie);
+            }
+            else
+            {
+                AnimSetTrigger("hurt");
+                SoundManagerZS.PlaySfx(soundHurt);
+            }
         }
-    }
-    #endregion
+        #endregion
 
-    public void AddHearth(int amount)
-    {
-        currentHealth += amount;
-        currentHealth = Mathf.Min(currentHealth, health);
-        if (healthBar)
-            healthBar.UpdateValue(currentHealth / (float)health);
-    }
+        public void AddHearthH(int amount)
+        {
+            currentHealthH += amount;
+            currentHealthH = Mathf.Min(currentHealthH, health);
+            if (healthBarR)
+                healthBarR.UpdateValueE(currentHealthH / (float)health);
+        }
 
-    private void OnDrawGizmos()
-    {
-        Gizmos.DrawLine(transform.position, new Vector3(transform.position.x, limitAbovePos, 0));
-        Gizmos.DrawLine(transform.position, new Vector3(transform.position.x, limitBelowPos, 0));
+        private void OnDrawGizmos()
+        {
+            Gizmos.DrawLine(transform.position, new Vector3(transform.position.x, limitAbovePos, 0));
+            Gizmos.DrawLine(transform.position, new Vector3(transform.position.x, limitBelowPos, 0));
+        }
     }
 }

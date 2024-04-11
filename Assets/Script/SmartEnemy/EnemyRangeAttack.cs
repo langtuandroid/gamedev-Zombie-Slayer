@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Script;
 using UnityEngine;
 
 [AddComponentMenu("ADDP/Enemy AI/Range Attack")]
@@ -166,8 +167,8 @@ public class EnemyRangeAttack : MonoBehaviour {
                 _tempFX.transform.position = shellPos;
             }
 
-            SoundManager.PlaySfx(soundShoot, soundShootVolume);
-            SoundManager.PlaySfx(shellSound, shellSoundVolume);
+            SoundManagerZS.PlaySfx(soundShoot, soundShootVolume);
+            SoundManagerZS.PlaySfx(shellSound, shellSoundVolume);
 
             if (hit)
             {
