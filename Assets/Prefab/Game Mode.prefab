@@ -45,7 +45,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f577b7357e6e5f4783e0b8d6a1ca3b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  showTestOption: 0
+  showTestOption: 1
   grenadePrice: 50
   rocketPrice: 125
   showInfor: 0

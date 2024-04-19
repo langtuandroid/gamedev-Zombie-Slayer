@@ -94,7 +94,7 @@ public class LevelEnemyManager : MonoBehaviour, IListener
         yield return new WaitForSeconds(0.5f);
 
         CameraFollowZS.Instance.SetDefaultLimit();
-        MenuManager.Instance.ShowHandDirection();
+        MenuManagerZS.Instance.ShowHandDirection();
     }
 
     bool isEnemyAlive()

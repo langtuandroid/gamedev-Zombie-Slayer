@@ -13,20 +13,21 @@ public class FlashSceneZS : MonoBehaviour {
         StartCoroutine(LoadAsynchronouslyY(sceneLoadD));
     }
 
-    public GameObject LoadingObj;
-    public Slider slider;
-    public Text progressText;
+    [FormerlySerializedAs("LoadingObj")] [SerializeField] private GameObject LoadingObjJ;
+    [SerializeField] private Slider sliderR;
+    [FormerlySerializedAs("progressText")] [SerializeField] private Text progressTextT;
+    
     private IEnumerator LoadAsynchronouslyY(string name)
     {
-        LoadingObj.SetActive(false);
+        LoadingObjJ.SetActive(false);
         yield return new WaitForSeconds(delayY);
-        LoadingObj.SetActive(true);
+        LoadingObjJ.SetActive(true);
         AsyncOperation operation = SceneManager.LoadSceneAsync(name);
         while (!operation.isDone)
         {
             float progress = Mathf.Clamp01(operation.progress / 0.9f);
-            slider.value = progress;
-            progressText.text = (int) progress * 100f + "%";
+            sliderR.value = progress;
+            progressTextT.text = (int) progress * 100f + "%";
             //			Debug.LogError (progress);
             yield return null;
         }

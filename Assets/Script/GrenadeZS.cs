@@ -1,8 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using Script;
+﻿using Script;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 public class GrenadeZS : MonoBehaviour
 {

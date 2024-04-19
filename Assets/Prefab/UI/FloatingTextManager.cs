@@ -25,7 +25,7 @@ public class FloatingTextManager : MonoBehaviour
 		var _position = Camera.main.WorldToScreenPoint(para.localTextOffset + ownerPosition);
 		GameObject floatingText = SpawnSystemHelper.GetNextObject(FloatingText, false);
 		floatingText.transform.position = _position;
-		floatingText.transform.SetParent(MenuManager.Instance.transform, false);
+		floatingText.transform.SetParent(MenuManagerZS.Instance.transform, false);
 		//floatingText.transform.position = _position;
 
 		var _FloatingText = floatingText.GetComponent<FloatingText>();
@@ -45,7 +45,7 @@ public class FloatingTextManager : MonoBehaviour
 		GameObject floatingText = SpawnSystemHelper.GetNextObject(FloatingText, false);
 		floatingText.transform.position = _position;
 
-		floatingText.transform.SetParent(MenuManager.Instance.transform, false);
+		floatingText.transform.SetParent(MenuManagerZS.Instance.transform, false);
 		//floatingText.transform.position = _position;
 
 		var _FloatingText = floatingText.GetComponent<FloatingText>();
