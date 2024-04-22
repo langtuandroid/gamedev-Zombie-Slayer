@@ -1,14 +1,15 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using Script;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class MissionManagerZS : MonoBehaviour
 {
-    [SerializeField] private  Text missionTxt;
-    [SerializeField] private  Text missionInformation;
+    [SerializeField] private  TextMeshProUGUI missionTxt;
+    [SerializeField] private  TextMeshProUGUI missionInformation;
     [SerializeField] private  Text timerTxt;
     [FormerlySerializedAs("TimerObj")] [SerializeField] private  GameObject timerObj;
     private Mission currentMissionN;

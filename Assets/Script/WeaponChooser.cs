@@ -1,12 +1,28 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using Script;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using Zenject;
 
 public class WeaponChooser : MonoBehaviour
 {
+    [Header("Slots")] 
+    [SerializeField] private Sprite substrateImage;
+
+    [SerializeField] private Sprite emptyImage;
+    
+    [Space]
+    
+    [SerializeField] private Image emptyCircle;
+    [SerializeField] private TextMeshProUGUI emptyText;
+
+    [Space] 
+    
+    [SerializeField] private Image emptyCircleTwo;
+    [SerializeField] private TextMeshProUGUI emptyTextTwo;
+    
     public static WeaponChooser Instance;
     public Image gunTypeA, gunTypeB;
     public GunTypeIDZS[] listGunA;
@@ -34,9 +50,10 @@ public class WeaponChooser : MonoBehaviour
         CheckGun();
     }
 
-    bool hasGunA = false;
-    bool hasGunB = false;
-    void CheckGun()
+    private bool hasGunA = false;
+    private bool hasGunB = false;
+    
+    private void CheckGun()
     {
         if (!hasGunA)
         {
@@ -46,6 +63,8 @@ public class WeaponChooser : MonoBehaviour
                 {
                     hasGunA = true;
                     gunTypeA.sprite = gunA.icon;
+                    emptyCircle.sprite = substrateImage;
+                    emptyText.gameObject.SetActive(false);
                 }
             }
 
@@ -64,6 +83,8 @@ public class WeaponChooser : MonoBehaviour
                 {
                     hasGunB = true;
                     gunTypeB.sprite = gunB.icon;
+                    emptyCircleTwo.sprite = substrateImage;
+                    emptyTextTwo.gameObject.SetActive(false);
                 }
             }
 
@@ -74,6 +95,8 @@ public class WeaponChooser : MonoBehaviour
                     if (gunB.IsUnlocked)
                     {
                         gunTypeB.sprite = gunB.icon;
+                        emptyCircleTwo.sprite = substrateImage;
+                        emptyTextTwo.gameObject.SetActive(false);
                         GlobalValueZS.pickGun(gunB);
 
                         if (GunManagerZS.Instance)
@@ -82,6 +105,15 @@ public class WeaponChooser : MonoBehaviour
                 }
             }
         }
+
+        if (hasGunB == false)
+        {
+            gunTypeB.gameObject.SetActive(false);
+        }
+        else
+        {
+            gunTypeB.gameObject.SetActive(true);
+        }
     }
 
     public void SetGun(GunTypeIDZS gunIdzs)
@@ -89,15 +121,22 @@ public class WeaponChooser : MonoBehaviour
         if (gunIdzs.gunType == GUNTYPE.typeA)
         {
             gunTypeA.sprite = gunIdzs.icon;
+            emptyCircle.sprite = substrateImage;
         }
         else
         {
             gunTypeB.sprite = gunIdzs.icon;
+            emptyCircleTwo.sprite = substrateImage;
         }
     }
 
     public void PlayGame()
     {
         mainMenuHomeSceneZs.LoadScene();
+    }
+
+    public void CloseDialog()
+    {
+        gameObject.SetActive(false);
     }
 }

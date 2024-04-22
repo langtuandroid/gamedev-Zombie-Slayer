@@ -1,13 +1,14 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using Script;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using Zenject;
 
 public class GrenadeBtn : MonoBehaviour
 {
-    public Text priceTxt;
+    public TextMeshProUGUI priceTxt;
 
     int price = 0;
     

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using Script;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
@@ -10,15 +11,15 @@ public class ShopCharacterUpgradeZS : MonoBehaviour
     [FormerlySerializedAs("gunID")] public GunTypeIDZS gunIdzs;
     [FormerlySerializedAs("currentRangeDamage")]
     [Space]
-    [SerializeField] private Text currentRangeDamageE;
+    [SerializeField] private TextMeshProUGUI currentRangeDamageE;
 
     [FormerlySerializedAs("upgradeRangeDamageStep")]
     [Space]
-    [SerializeField] private Text upgradeRangeDamageStepE;
+    [SerializeField] private TextMeshProUGUI upgradeRangeDamageStepE;
 
-    [SerializeField] private Text price;
+    [SerializeField] private TextMeshProUGUI price;
     [SerializeField] private GameObject lockedObj;
-    [SerializeField] private Text unlockPriceTxt;
+    [SerializeField] private TextMeshProUGUI unlockPriceTxt;
     [SerializeField] private GameObject dot;
     [SerializeField] private GameObject dotHoderR;
     

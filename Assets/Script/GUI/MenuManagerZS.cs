@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Script;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
@@ -24,7 +25,7 @@ public class MenuManagerZS : MonoBehaviour, IListener
     [SerializeField] private  Image musicImage;
     [SerializeField] private  Sprite soundImageOn, soundImageOff, musicImageOn, musicImageOff;
     [SerializeField] private  GameObject handDirection;
-    [SerializeField] private  Text levelTxt;
+    [SerializeField] private  TextMeshProUGUI levelTxt;
     private UI_UI uiControlL;
     
     [Inject] private GameModeZS gameModeZs;
@@ -59,8 +60,8 @@ public class MenuManagerZS : MonoBehaviour, IListener
 
     private IEnumerator Start()
     {
-        soundImage.sprite = GlobalValueZS.IsSound ? soundImageOn : soundImageOff;
-        musicImage.sprite = GlobalValueZS.IsMusic ? musicImageOn : musicImageOff;
+       // soundImage.sprite = GlobalValueZS.IsSound ? soundImageOn : soundImageOff;
+       // musicImage.sprite = GlobalValueZS.IsMusic ? musicImageOn : musicImageOff;
         if (!GlobalValueZS.IsSound)
             SoundManagerZS.SoundVolume = 0;
         if (!GlobalValueZS.IsMusic)

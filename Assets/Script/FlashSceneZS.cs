@@ -1,21 +1,22 @@
 ﻿using UnityEngine;
 using System.Collections;
+using TMPro;
 using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class FlashSceneZS : MonoBehaviour {
 
-	[FormerlySerializedAs("sceneLoad")] public string sceneLoadD = "scene name";
-	[FormerlySerializedAs("delay")] public float delayY = 2;
+    public string sceneLoadD = "scene name";
+    public float delayY = 1;
 	
 	private void Awake () {
         StartCoroutine(LoadAsynchronouslyY(sceneLoadD));
     }
 
-    [FormerlySerializedAs("LoadingObj")] [SerializeField] private GameObject LoadingObjJ;
+    [SerializeField] private GameObject LoadingObjJ;
     [SerializeField] private Slider sliderR;
-    [FormerlySerializedAs("progressText")] [SerializeField] private Text progressTextT;
+    [SerializeField] private TextMeshProUGUI progressTextT;
     
     private IEnumerator LoadAsynchronouslyY(string name)
     {

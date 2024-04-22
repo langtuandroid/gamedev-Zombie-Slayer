@@ -13,6 +13,8 @@ public class ChooseItemUIZS : MonoBehaviour
     [FormerlySerializedAs("unlockBtn")] [SerializeField] private  GameObject unlockButton;
     [FormerlySerializedAs("pick")] [SerializeField] private  Image pickK;
 
+    [SerializeField] private Image substrate;
+    
     [Inject] private MainMenuHomeSceneZS mainMenuHomeSceneZs;
     
     private Button ownerButtonZs;
@@ -31,6 +33,7 @@ public class ChooseItemUIZS : MonoBehaviour
     {
         ownerButtonZs.interactable = gunIDD.IsUnlocked;
         unlockButton.SetActive(!gunIDD.IsUnlocked);
+        substrate.gameObject.SetActive(gunIDD.IsUnlocked);
         pickK.gameObject.SetActive(gunIDD.IsUnlocked);
         pickK.color = GlobalValueZS.isPicked(gunIDD) ? Color.white : Color.black;
     }

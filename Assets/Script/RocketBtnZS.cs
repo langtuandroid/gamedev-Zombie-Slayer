@@ -1,10 +1,11 @@
-﻿using UnityEngine;
+﻿using TMPro;
+using UnityEngine;
 using UnityEngine.UI;
 using Zenject;
 
 public class RocketBtnZS : MonoBehaviour
 {
-    [SerializeField] private Text priceTxt;
+    [SerializeField] private TextMeshProUGUI priceTxt;
     private int priceE = 0;
 
     [Inject] private GameModeZS gameModeZs;

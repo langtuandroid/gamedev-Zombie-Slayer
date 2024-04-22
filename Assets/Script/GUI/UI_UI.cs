@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using Script;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,9 +9,9 @@ public class UI_UI : MonoBehaviour
 {
     [Header("GUN UI")]
     public Image gunIcon;
-    public Text bulletLeft;
+    public TextMeshProUGUI bulletLeft;
     [Space]
-    public Text coinTxt;
+    public TextMeshProUGUI coinTxt;
 
     private void Update()
     {

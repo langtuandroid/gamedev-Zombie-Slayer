@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using TMPro;
 using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
@@ -19,13 +20,16 @@ public class MainMenuHomeSceneZS : MonoBehaviour {
 	[SerializeField] private string facebookLink;
     [SerializeField] private string twitterLink = "https://twitter.com/";
 
-    [SerializeField] private Text[] coinTxt;
+    [SerializeField] private TextMeshProUGUI[] coinTxt;
 
     [Header("Sound and Music")]
     [SerializeField] private Image soundImage;
     [SerializeField] private Image musicImage;
     [SerializeField] private Sprite soundImageOn, soundImageOff, musicImageOn, musicImageOff;
 
+    [SerializeField] private Slider slider;
+    [SerializeField] private TextMeshProUGUI progressText;
+    
     [Inject] private GameModeZS gameModeZs;
     
     private void Awake(){
@@ -159,7 +163,7 @@ public class MainMenuHomeSceneZS : MonoBehaviour {
     public void TurnMusic()
     {
         GlobalValueZS.IsMusic = !GlobalValueZS.IsMusic;
-        musicImage.sprite = GlobalValueZS.IsMusic ? musicImageOn : musicImageOff;
+        //musicImage.sprite = GlobalValueZS.IsMusic ? musicImageOn : musicImageOff;
 
         SoundManagerZS.MusicVolume = GlobalValueZS.IsMusic ? SoundManagerZS.Instance.musicsGameVolume : 0;
     }
@@ -177,9 +181,8 @@ public class MainMenuHomeSceneZS : MonoBehaviour {
 		SceneManager.LoadScene ("Tutorial");
 	}
 
-    public Slider slider;
-    public Text progressText;
-    IEnumerator LoadAsynchronously(string name)
+   
+    private IEnumerator LoadAsynchronously(string name)
     {
         AsyncOperation operation = SceneManager.LoadSceneAsync(name);
         while (!operation.isDone)
