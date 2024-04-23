@@ -15,7 +15,7 @@ public class SmartEnemyGrounded : Enemy, ICanTakeDamage {
 	bool allowCheckAttack = true;
 
 	EnemyMeleeAttack meleeAttack;
-    SpawnItemHelper spawnItem;
+    SpawnItemHelperZS spawnItem;
     public bool isFacingRight { get { return transform.rotation.eulerAngles.y == 180; } }
 
     public override void Start ()
@@ -28,7 +28,7 @@ public class SmartEnemyGrounded : Enemy, ICanTakeDamage {
 		if (meleeAttack && meleeAttack.MeleeObj)
 			meleeAttack.MeleeObj.SetActive (attackType == ATTACKTYPE.MELEE);
 
-		spawnItem = GetComponent<SpawnItemHelper> ();
+		spawnItem = GetComponent<SpawnItemHelperZS> ();
     }
 
 	public override void Update ()

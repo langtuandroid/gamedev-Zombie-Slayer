@@ -110,12 +110,12 @@ TextureImporter:
     textureFormat: -1
     textureCompression: 1
     compressionQuality: 50
-    crunchedCompression: 0
+    crunchedCompression: 1
     allowsAlphaSplitting: 0
     overridden: 0
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 1
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 3
     buildTarget: Standalone
     maxTextureSize: 2048
@@ -128,7 +128,7 @@ TextureImporter:
     overridden: 0
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 1
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 3
     buildTarget: Android
     maxTextureSize: 2048
@@ -141,7 +141,7 @@ TextureImporter:
     overridden: 0
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 1
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 3
     buildTarget: Server
     maxTextureSize: 2048
@@ -154,7 +154,7 @@ TextureImporter:
     overridden: 0
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 1
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
@@ -162,10 +162,10 @@ TextureImporter:
       name: Blow FX_0
       rect:
         serializedVersion: 2
-        x: 1
-        y: 221
-        width: 128
-        height: 111
+        x: 0
+        y: 884
+        width: 512
+        height: 444
       alignment: 9
       pivot: {x: 0.41842622, y: 0.35218054}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -183,10 +183,10 @@ TextureImporter:
       name: Blow FX_1
       rect:
         serializedVersion: 2
-        x: 128
-        y: 221.33334
-        width: 128
-        height: 110.666664
+        x: 520
+        y: 884
+        width: 512
+        height: 444
       alignment: 9
       pivot: {x: 0.4582907, y: 0.38790315}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -204,10 +204,10 @@ TextureImporter:
       name: Blow FX_2
       rect:
         serializedVersion: 2
-        x: 256
-        y: 221.33334
-        width: 128
-        height: 110.666664
+        x: 1024
+        y: 884
+        width: 512
+        height: 444
       alignment: 9
       pivot: {x: 0.4978633, y: 0.40278655}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -225,10 +225,10 @@ TextureImporter:
       name: Blow FX_3
       rect:
         serializedVersion: 2
-        x: 384
-        y: 221
-        width: 128
-        height: 111
+        x: 1536
+        y: 884
+        width: 512
+        height: 444
       alignment: 9
       pivot: {x: 0.5260744, y: 0.4331456}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -246,10 +246,10 @@ TextureImporter:
       name: Blow FX_4
       rect:
         serializedVersion: 2
-        x: 1
-        y: 111
-        width: 128
-        height: 111
+        x: 4
+        y: 444
+        width: 512
+        height: 444
       alignment: 9
       pivot: {x: 0.38929272, y: 0.33661467}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -267,10 +267,10 @@ TextureImporter:
       name: Blow FX_5
       rect:
         serializedVersion: 2
-        x: 128
-        y: 111.333336
-        width: 128
-        height: 110.666664
+        x: 512
+        y: 444
+        width: 512
+        height: 444
       alignment: 9
       pivot: {x: 0.44848216, y: 0.30776107}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -288,10 +288,10 @@ TextureImporter:
       name: Blow FX_6
       rect:
         serializedVersion: 2
-        x: 256
-        y: 111.333336
-        width: 128
-        height: 110.666664
+        x: 1024
+        y: 444
+        width: 512
+        height: 444
       alignment: 9
       pivot: {x: 0.5039816, y: 0.34426647}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -309,10 +309,10 @@ TextureImporter:
       name: Blow FX_7
       rect:
         serializedVersion: 2
-        x: 384
-        y: 111.333336
-        width: 128
-        height: 110.666664
+        x: 1536
+        y: 444
+        width: 512
+        height: 444
       alignment: 9
       pivot: {x: 0.540787, y: 0.3666186}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -331,9 +331,9 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 1.3333359
-        width: 128
-        height: 110.666664
+        y: 4
+        width: 512
+        height: 444
       alignment: 9
       pivot: {x: 0.4076953, y: 0.24210943}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -351,10 +351,10 @@ TextureImporter:
       name: Blow FX_9
       rect:
         serializedVersion: 2
-        x: 129
-        y: 1
-        width: 128
-        height: 111
+        x: 516
+        y: 4
+        width: 512
+        height: 444
       alignment: 9
       pivot: {x: 0.4288653, y: 0.27860722}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -372,10 +372,10 @@ TextureImporter:
       name: Blow FX_10
       rect:
         serializedVersion: 2
-        x: 256
-        y: 1.3333359
-        width: 128
-        height: 110.666664
+        x: 1024
+        y: 4
+        width: 512
+        height: 444
       alignment: 9
       pivot: {x: 0.4911139, y: 0.31410816}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -393,10 +393,10 @@ TextureImporter:
       name: Blow FX_11
       rect:
         serializedVersion: 2
-        x: 384
-        y: 1.3333359
-        width: 128
-        height: 110.666664
+        x: 1536
+        y: 4
+        width: 512
+        height: 444
       alignment: 9
       pivot: {x: 0.53097844, y: 0.30523473}
       border: {x: 0, y: 0, z: 0, w: 0}
